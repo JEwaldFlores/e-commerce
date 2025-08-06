@@ -1,8 +1,16 @@
 import { Injectable } from '@nestjs/common';
+import { UsersRepository } from 'src/users/users.repository';
 
 @Injectable()
 export class AuthService {
+    constructor(private readonly usersRepository: UsersRepository){}
     getAuth(){
-        return `Autenticación`;
+        return 'Autenticación';
+    }
+    signIn(email:string, password:string){
+    if(!email || !password)return 'Credenciales incorrectas';
+    const user = this.usersRepository.getUserByEmail(email);
+    // if(!user|| user.password !== password) return 'Credenciales incorrectas';
+    return 'Usuario logueado(TOKEN)';
     }
 }
