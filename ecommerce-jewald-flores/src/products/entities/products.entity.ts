@@ -1,4 +1,4 @@
-import { Categories } from "src/entities/categories.entity";
+import { Categories } from "src/categories/entities/categories.entity";
 import { OrderDetails } from "src/entities/ordersdetails.entity";
 import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 

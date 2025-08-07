@@ -10,7 +10,7 @@ export class Users{
 
     @Column({
         type: 'varchar',
-        length: 50,
+        length: 80,
         nullable: false,
     })
     name: string; 
@@ -25,7 +25,7 @@ export class Users{
 
     @Column({
         type: 'varchar',
-        length: 20, //luego guardaremos el HASH
+        length: 15, //luego guardaremos el HASH
         nullable: false,
     })
     password: string;
@@ -38,7 +38,7 @@ export class Users{
 
     @Column({
         type: 'varchar',
-        length: 50,
+        length: 20,
         nullable: true,
     })
     country?: string;
@@ -51,7 +51,7 @@ export class Users{
 
     @Column({
         type: 'varchar',
-        length: 50,
+        length: 20,
         nullable: true,
     })
     city?: string;
@@ -66,3 +66,4 @@ export class Users{
         // @JoinColumn({name: 'order_id'})
         orders: Orders[];
 }
+
