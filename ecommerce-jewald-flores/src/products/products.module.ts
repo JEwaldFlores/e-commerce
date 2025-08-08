@@ -9,6 +9,7 @@ import { Categories } from 'src/categories/entities/categories.entity';
 @Module({
   imports:[TypeOrmModule.forFeature ([Products, Categories])],
   controllers: [ProductsController],
-  providers: [ProductsService, ProductsRepository]
+  providers: [ProductsService, ProductsRepository],
+  exports: [ProductsService]
 })
 export class ProductsModule {}

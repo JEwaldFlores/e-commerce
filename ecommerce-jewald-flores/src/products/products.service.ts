@@ -18,7 +18,7 @@ export class ProductsService {
      return this.productsRepository.createProduct(product);
     }
 
-    updateProduct(id: string, product: Products) {
+    updateProduct(id: string, product: Partial<Products>) {
         return this.productsRepository.updateProduct(id, product);
     }
 
