@@ -1,3 +1,4 @@
+import ENV from 'config/environment';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
@@ -9,6 +10,6 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(process.env.PORT ?? 3000);
-  console.log(`Server listening`)
+  console.log(`🚀 Server listening on http://localhost:${ENV.PORT}`)
 }
 bootstrap();

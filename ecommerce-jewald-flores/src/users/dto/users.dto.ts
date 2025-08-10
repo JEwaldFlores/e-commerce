@@ -7,8 +7,10 @@ import {
   IsNumber,
   Matches,
   IsOptional,
+  Validate,
 } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
+import { MatchPassword } from 'src/decorators/matchPassword.decorator';
 
 export class CreateUserDto {
   @IsNotEmpty({ message: 'El nombre no puede estar vacío.' })
@@ -32,6 +34,10 @@ export class CreateUserDto {
     message: 'Debe incluir al menos un carácter especial.',
   })
   password: string;
+
+  @IsNotEmpty()
+  @Validate(MatchPassword, ['password'])
+  confirmPassword: string;
 
   @IsOptional()
   @IsString()

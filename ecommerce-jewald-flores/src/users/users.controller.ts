@@ -24,11 +24,11 @@ export class UsersController {
         return this.usersService.getUserById(id);
     }
     //**POST localhost/users  */
-    @HttpCode(201)
-    @Post()
-    addUser(@Body() user: CreateUserDto) {
-        return this.usersService.addUser(user);
-    }
+    // @HttpCode(201)
+    // @Post()
+    // addUser(@Body() user: CreateUserDto) {
+    //     return this.usersService.addUser(user);
+    // }
     //** PUT localhost/users/:id  */
     @Put(':id')
     @UseGuards(AuthGuard)

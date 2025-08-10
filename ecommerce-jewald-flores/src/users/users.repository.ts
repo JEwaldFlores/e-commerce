@@ -43,7 +43,10 @@ export class UsersRepository{
 
   async addUser(userDto: CreateUserDto){
     const newUser = await this.usersRepository.save(userDto);
-    const{password, ...userNoPassword}= newUser;
+    const dbUser = await this.usersRepository.findOneBy({id: newUser.id});
+
+    if (!dbUser) throw new Error (`No se encontró el usuario con id ${newUser.id}`);
+    const{password, ...userNoPassword}= dbUser;
     return userNoPassword;
   }
 

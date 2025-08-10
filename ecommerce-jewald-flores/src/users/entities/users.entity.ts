@@ -25,7 +25,7 @@ export class Users{
 
     @Column({
         type: 'varchar',
-        length: 15, //luego guardaremos el HASH
+        length: 60, 
         nullable: false,
     })
     password: string;
