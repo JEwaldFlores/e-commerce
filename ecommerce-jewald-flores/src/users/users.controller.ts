@@ -2,15 +2,18 @@ import { Body, Controller, Delete, Get, HttpCode, Param, ParseUUIDPipe, Post, Pu
 import { UsersService } from './users.service';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { CreateUserDto, UpdateUserDto } from './dto/users.dto';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/auth/roles.enum';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
 
 @Controller('users')
 export class UsersController {
     constructor (private readonly usersService:UsersService){}
-
      //**GET TODOS localhost/users */
     @Get()
-    @UseGuards(AuthGuard)
+    @Roles(Role.Admin)
+    @UseGuards(AuthGuard, RolesGuard)
     getUsers(@Query('page') page:string, @Query('limit') limit: string) {
         if(page && limit)
         return this.usersService.getUsers(Number(page), Number(limit));

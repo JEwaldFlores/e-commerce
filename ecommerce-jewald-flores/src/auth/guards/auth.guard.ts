@@ -1,39 +1,33 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import ENV from "config/environment";
-import { Request } from "express";
 import { Observable } from "rxjs";
+import { Role } from "../roles.enum";
 
-// function validate(request: Request){
-// const authHeader = request.headers['authorization'];
-// if(!authHeader) return false;
 
-// const auth= authHeader.split(' ')[1];
-// if(!auth) return false;
-
-// const [email, password] = auth.split(':');
-// if(!email || !password) return false;
-
-// return true;
-// }
 
 @Injectable()
 export class AuthGuard implements CanActivate{
   constructor(private readonly jwtService: JwtService){}  
   canActivate(
-        context: ExecutionContext): boolean | Promise<boolean> {
+        context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean>{
           const request= context.switchToHttp().getRequest();
           const token = request.headers.authorization?.split(' ')[1];
           if (!token){throw new UnauthorizedException (`No se ha enviado un token`)}
           try {
             const secret = ENV.JWT_SECRET;
             const payload = this.jwtService.verify(token, {secret});
-            console.log(payload);
+            //console.log(payload);
 
-            //payload = datos del usar logueado
+            //payload = datos del usario logueado
            payload.exp = new Date (payload.exp * 1000);
+           //isAdmin: true || false => ['admin'] || ['user']
+           payload.roles = payload.isAdmin ? [Role.Admin] : [Role.User];
+
            request.user = payload;
            console.log(request.user)
+           
+          
 
            return true;  
           } catch (error) {

@@ -8,6 +8,7 @@ import {
   Matches,
   IsOptional,
   Validate,
+  IsEmpty,
 } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 import { MatchPassword } from 'src/decorators/matchPassword.decorator';
@@ -61,7 +62,7 @@ export class CreateUserDto {
   @MaxLength(20, { message: 'La ciudad no debe superar los 20 caracteres.' })
   city?: string;
 
-  @IsOptional()
+  @IsEmpty()
   isAdmin?: boolean;
 }
 

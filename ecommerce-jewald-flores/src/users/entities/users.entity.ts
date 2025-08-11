@@ -59,7 +59,7 @@ export class Users{
     @Column({
         default: false,
     })
-        isAdmin: boolean;
+    isAdmin: boolean;
     
 
         @OneToMany(()=> Orders, (order)=> order.user)

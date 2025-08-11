@@ -18,7 +18,7 @@ export class UsersRepository{
       take: limit,
       skip: skip,
     });
-    return users.map(({password, ...userNoPassword})=> userNoPassword);
+    return users.map(({password, ...filteredUserData})=> filteredUserData);
   }
 
   async getUserById(id: string){
@@ -30,7 +30,7 @@ export class UsersRepository{
     });
     if (!user) throw new NotFoundException(`No se encontró el usuario con el id ${id}`);
     
-    const { password, orders, ...userNoPassword } = user;
+    const { password, isAdmin, orders, ...userNoPassword } = user;
     const userOrderSummaries = orders.map(order => ({
       id: order.id,
       date: order.date,
@@ -46,7 +46,7 @@ export class UsersRepository{
     const dbUser = await this.usersRepository.findOneBy({id: newUser.id});
 
     if (!dbUser) throw new Error (`No se encontró el usuario con id ${newUser.id}`);
-    const{password, ...userNoPassword}= dbUser;
+    const{password, isAdmin, ...userNoPassword}= dbUser;
     return userNoPassword;
   }
 
@@ -54,7 +54,7 @@ export class UsersRepository{
     await this.usersRepository.update (id, user);
     const updatedUser = await this.usersRepository.findOneBy({id});
     if (!updatedUser) { throw new NotFoundException(`No existe usuario con id ${id}`)};
-  const {password, ...userNoPassword} = updatedUser;
+  const {password, isAdmin, ...userNoPassword} = updatedUser;
     return userNoPassword;
   }
 
@@ -62,7 +62,7 @@ export class UsersRepository{
     const user = await this.usersRepository.findOneBy({id});
     if (!user) {throw new NotFoundException(`No existe usuario con id ${id}`)};
     await this.usersRepository.remove(user);
-    const{password, ...userNoPassword}= user;
+    const{password, isAdmin, ...userNoPassword}= user;
     return userNoPassword;
   }
 
