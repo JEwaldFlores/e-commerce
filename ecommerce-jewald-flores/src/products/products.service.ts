@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ProductsRepository } from './products.repository';
-import { Products } from './entities/products.entity';
+import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 
 @Injectable()
 export class ProductsService {
@@ -14,12 +14,12 @@ export class ProductsService {
         return this.productsRepository.getProduct(id);
     }
 
-    createProduct(product: Products) {
-     return this.productsRepository.createProduct(product);
+    createProduct(dto: CreateProductDto) {
+     return this.productsRepository.createProduct(dto);
     }
 
-    updateProduct(id: string, product: Partial<Products>) {
-        return this.productsRepository.updateProduct(id, product);
+    updateProduct(id: string, dto: UpdateProductDto) {
+        return this.productsRepository.updateProduct(id, dto);
     }
 
     deleteProduct(id: string) {

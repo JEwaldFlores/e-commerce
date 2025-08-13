@@ -63,7 +63,6 @@ export class Users{
     
 
         @OneToMany(()=> Orders, (order)=> order.user)
-        // @JoinColumn({name: 'order_id'})
         orders: Orders[];
 }
 

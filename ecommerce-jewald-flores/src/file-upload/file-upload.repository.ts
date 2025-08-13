@@ -2,9 +2,18 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { UploadApiResponse, UploadApiErrorResponse, v2 as cloudinary } from 'cloudinary';
 import toStream = require('buffer-to-stream');
 
-//se maneja como promesa porque cloudinary no esta dentro del codigo se maneja como repositorio
+/**
+ * FileUploadRepository
+ * Encapsula la lógica de subida de archivos a Cloudinary usando streams
+ */
 @Injectable()
 export class FileUploadRepository {
+
+  /**
+   * Sube una imagen a Cloudinary desde un buffer
+   * @param file Archivo recibido desde Multer (en memoria)
+   * @returns UploadApiResponse con datos como secure_url
+   */
   async uploadImage(file: Express.Multer.File): Promise<UploadApiResponse> {
     return new Promise((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(
@@ -19,7 +28,7 @@ export class FileUploadRepository {
         },
       );
 
-      toStream(file.buffer).pipe(uploadStream); //hace la conversion 
+      toStream(file.buffer).pipe(uploadStream); 
     });
   }
 }

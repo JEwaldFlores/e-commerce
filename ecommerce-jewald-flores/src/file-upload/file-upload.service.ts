@@ -11,20 +11,19 @@ export class FileUploadService {
   ) {}
 
   async uploadImage(file: Express.Multer.File, productId: string): Promise<UploadImageResponseDto> {
-        // 1. Verifica si el producto existe (NotFoundException si no)
+       
         const product = await this.productsService.getProduct(productId);
       
         if (!product) {
           throw new NotFoundException(`Producto con ID ${productId} no encontrado`);
         }
 
-        // 2. Sube la imagen a Cloudinary
         const { secure_url } = await this.fileUploadRepository.uploadImage(file);
 
-        // 3. Actualiza el campo imgUrl del producto
+      
         await this.productsService.updateProduct(productId, { imgUrl: secure_url, });
 
-            // 4. Devuelve una respuesta estructurada
+            
             return new UploadImageResponseDto({
             message: 'Imagen actualizada exitosamente',
             imageUrl: secure_url,

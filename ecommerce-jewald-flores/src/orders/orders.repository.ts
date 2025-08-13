@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Orders } from "src/orders/entities/orders.entity";
-import { OrderDetails } from "src/entities/ordersdetails.entity";
 import { Products } from "src/products/entities/products.entity";
 import { Users } from "src/users/entities/users.entity";
 import { Repository } from "typeorm";
 import { CreateOrderDto } from "./dto/create-order.dto";
+import { OrderDetails } from "./entities/ordersdetails.entity";
 
 @Injectable()
 export class OrdersRepository{
@@ -23,20 +23,16 @@ export class OrdersRepository{
     async addOrder (orderDto: CreateOrderDto){
        const { userId, products } = orderDto;
 
-        //vefirificamos que exista el usuario
         const user = await this.usersRepository.findOneBy({id: userId})
-        if(!user){
-            throw new NotFoundException (`Usuario con id ${userId} no encontrado`);
-        }
+        if(!user){throw new NotFoundException (`Usuario con id ${userId} no encontrado`)};
+        
 
-        //creamos la orden
         const order = new Orders();
         order.date = new Date();
         order.user = user;
 
         const newOrder = await this.ordersRepository.save(order);
 
-        //asociamos cada id recibido con el producto 
         const productsArray= await Promise.all(
         products.map(async (element) => {
         const product= await this.productsRepository.findOneBy({
@@ -45,7 +41,6 @@ export class OrdersRepository{
         if(!product){throw new NotFoundException (`Producto con id ${element.id} no encontrado`)};
 
       
-        //Actualizar stock
         await this.productsRepository.update(
             {id: element.id},
             {stock: product.stock - 1},
@@ -54,13 +49,11 @@ export class OrdersRepository{
             }),
         );
 
-        //calculamos el total de forma segura 
         const total = productsArray.reduce(
             (sum, product) => sum + Number(product.price),
             0,
         );
 
-        //Crear "OrderDetail" e insertar en BBDD
         const orderDetail= new OrderDetails();
         
         orderDetail.price= Number(Number(total).toFixed(2));
@@ -68,7 +61,6 @@ export class OrdersRepository{
         orderDetail.order= newOrder;
         await this.orderDetailRepository.save(orderDetail);
 
-        //Enviar al cliente la compra con la info de productos
         return await this.ordersRepository.find({
             where: {id: newOrder.id},
             relations:{
@@ -88,9 +80,8 @@ export class OrdersRepository{
                 },
             },
         });
-        if(!order){
-            throw new NotFoundException(`Orden con id ${id} no encontrada`);
-        }
+        if(!order){throw new NotFoundException(`Orden con id ${id} no encontrada`)};
+        
         return order;
    }
 }

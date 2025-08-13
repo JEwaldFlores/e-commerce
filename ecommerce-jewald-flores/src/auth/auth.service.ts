@@ -1,9 +1,7 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
-import { Users } from 'src/users/entities/users.entity';
-import { UsersRepository } from 'src/users/users.repository';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from 'src/users/users.service';
-import { CreateUserDto } from 'src/users/dto/users.dto';
+import { CreateUserDto } from 'src/users/dto/user.dto';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
@@ -15,17 +13,17 @@ export class AuthService {
     getAuth(){
         return 'Autenticación';
     }
-    //login
+   
     async signIn(email:string, password:string){
-        //verificamos que exista 
+        
         const foundUser = await this.usersService.getUserByEmail(email);
-        if(!foundUser) throw new BadRequestException ('Credenciales incorrectas');
+        if(!foundUser) throw new UnauthorizedException ('Credenciales incorrectas');
 
-        //validar la contraseña con hash
+        
         const validPassword = await bcrypt.compare(password, foundUser.password);
-        if(!validPassword) throw new BadRequestException ('Credenciales incorrectas'); 
+        if(!validPassword) throw new UnauthorizedException ('Credenciales incorrectas'); 
          
-        //Generar token 
+     
         const payload = {id: foundUser.id, email: foundUser.email, isAdmin: foundUser.isAdmin};
         const token = this.jwtService.sign(payload);
 
@@ -34,15 +32,15 @@ export class AuthService {
             token,
         }
     }
-    //registro
+    
     async singUp(user: CreateUserDto){
         const{ email, password}= user;
-        //verficar que no exista
+        
         if(!email || !password) throw new BadRequestException ('Se necesita email y password'); 
         const foundUser = await this.usersService.getUserByEmail(email);
         if(foundUser) throw new BadRequestException ('Email ya registrado');
 
-        //Hashear contrasena 
+        
         const hashedPassword = await bcrypt.hash(password,10);
         if(!hashedPassword)throw new BadRequestException ('Error al hashear el Password');
 
