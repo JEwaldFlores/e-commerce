@@ -81,7 +81,7 @@ export class CreateUserDto {
   })
   @IsOptional()
   @IsString()
-  @MinLength(5, { message: 'El país debe tener al menos 2 caracteres.' })
+  @MinLength(5, { message: 'El país debe tener al menos 5 caracteres.' })
   @MaxLength(20, { message: 'El país no debe superar los 20 caracteres.' })
   country?: string;
   
@@ -91,7 +91,7 @@ export class CreateUserDto {
   })
   @IsOptional()
   @IsString()
-  @MinLength(5, { message: 'La ciudad debe tener al menos 2 caracteres.' })
+  @MinLength(5, { message: 'La ciudad debe tener al menos 5 caracteres.' })
   @MaxLength(20, { message: 'La ciudad no debe superar los 20 caracteres.' })
   city?: string;
 

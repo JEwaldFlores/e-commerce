@@ -31,7 +31,7 @@ export class FileUploadController {
     },
   })
   @ApiResponse({ status: 201, description: 'Imagen actualizada', type: UploadImageResponseDto})
-  
+  @ApiResponse({status: 400, description: 'Carga fallida'})
   async uploadImage(
     @Param('id', ParseUUIDPipe) productId: string,
     @UploadedFile(FileValidationPipe) file: Express.Multer.File,
