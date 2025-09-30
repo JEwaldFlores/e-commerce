@@ -25,7 +25,13 @@ export class Orders{
     @OneToOne(()=> OrderDetails, (orderDetails)=> orderDetails.order)
     orderDetails: OrderDetails;
 
-    @ManyToOne(()=> Users, (user)=> user.orders)
+    @ManyToOne(()=> Users, (user)=> user.orders, {
+          nullable: true,
+          onDelete: 'SET NULL',
+    })
+    
     @JoinColumn({name: 'user_id'})
-    user: Users;
+    user: Users | null
+
+    
 }

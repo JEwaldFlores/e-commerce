@@ -37,7 +37,7 @@ export class AuthController {
     @ApiOperation({ summary: 'Registrar usuario (con confirmación de password)' })
     @ApiResponse({ status: 201, description: 'Usuario creado (sin password)'})
     signUp(@Body() user: CreateUserDto){
-        return this.authService.singUp(user);
+        return this.authService.signUp(user);
     }
     
 }

@@ -33,7 +33,7 @@ export class AuthService {
         }
     }
     
-    async singUp(user: CreateUserDto){
+    async signUp(user: CreateUserDto){
         const{ email, password}= user;
         
         if(!email || !password) throw new BadRequestException ('Se necesita email y password'); 
