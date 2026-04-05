@@ -1,5 +1,9 @@
 import { config as dotenvConfig } from "dotenv";
-dotenvConfig({path: '.env.development'});
+dotenvConfig({
+  path: process.env.NODE_ENV === 'production' 
+    ? undefined 
+    : '.env.development',
+});
 
 const ENV= {
 PORT: process.env.PORT,
