@@ -10,6 +10,9 @@ const config = {
     port: Number (ENV.DB_PORT), 
     username:ENV.DB_USERNAME,
     password: ENV.DB_PASSWORD,
+    ssl: process.env.NODE_ENV === 'production'
+  ? { rejectUnauthorized: false }
+  : false,
     entities: ["dist/**/*.entity{.ts,.js}"],
     migrations: ["dist/migrations/*{.ts,.js}"],
     autoLoadEntities: true,
